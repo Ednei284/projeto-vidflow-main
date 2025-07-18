@@ -17,6 +17,7 @@ async function buscarEMostrarVideos() {
                                     <img class="img-canal" src="${video.imagem} alt="Logo do Canal">
                                     <h3 class="titulo-video">${video.titulo}</h3>
                                     <p class="titulo-canal">${video.descricao}</p>
+                                        <p class="categoria" hidden>${video.categoria}</p>
                             </div>
                     </li>
                     `;
@@ -30,8 +31,8 @@ async function buscarEMostrarVideos() {
 buscarEMostrarVideos();
 
 const pesquisar__input = document.querySelector('.pesquisar__input')
-pesquisar__input.addEventListener('input', pesquisar)
-function pesquisar() {
+pesquisar__input.addEventListener('input', filtroPesquisar)
+function filtroPesquisar() {
     const videos = document.querySelectorAll(".videos__item")
     if (pesquisar__input.value != '') {
         for (let video of videos) {
@@ -43,5 +44,26 @@ function pesquisar() {
                 video.style.display = "block";
             }
         }
+    }
+}
+
+const superior__item = document.querySelectorAll('.superior__item')
+
+superior__item.forEach((button) => {
+    const buttonName = button.getAttribute('name')
+    button.addEventListener('click', () => filtroPesquisarCategoria(buttonName))
+})
+function filtroPesquisarCategoria(buttonName) {
+    const videos = document.querySelectorAll(".videos__item")
+    for (let video of videos) {
+        let categoria = video.querySelector(".categoria").textContent.toLowerCase();
+        let valorFiltro = buttonName.toLowerCase();
+
+        if (!categoria.includes(valorFiltro) && valorFiltro != 'tudo') {
+            video.style.display = "none";
+        } else {
+            video.style.display = "block";
+        }
+
     }
 }
